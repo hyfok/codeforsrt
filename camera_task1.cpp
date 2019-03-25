@@ -95,7 +95,7 @@ int main(int argc, char ** argv) {
 			p.b = rgb.ptr<uchar>(m)[n * 3];		
 			p.g = rgb.ptr<uchar>(m)[n * 3 + 1];		
 			p.r = rgb.ptr<uchar>(m)[n * 3 + 2]; 			
-			p.a = prgb.ptr<uchar>(m)[n];
+//			p.a = prgb.ptr<uchar>(m)[n];
 			cloud->points.push_back(p);
 		
 		}
