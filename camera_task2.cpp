@@ -126,8 +126,8 @@ int main(int argc, char ** argv) {
 			pworld = t1.inv() * pcamera1;  //第一个相机坐标转世界坐标
 			pcamera2 = t2 * pworld;  //世界坐标转第二个相机坐标
 			
-		//	if (z1 != 0)
-			//{
+			if (pcamera2(2, 0) != 0)
+			{
 				u = int(pcamera2(0, 0) * camera_fx / pcamera2(2, 0) + camera_cx + 0.5);  //第二个相机坐标转像素坐标
 				v = int(pcamera2(1, 0) * camera_fy / pcamera2(2, 0) + camera_cy + 0.5);
 				if (u >= img2.cols) { u = img2.cols - 1; flag++; }
@@ -135,8 +135,8 @@ int main(int argc, char ** argv) {
 				if (v >= img2.rows) {v = img2.rows - 1; flag++; }
 				if (v < 0){v = 0; flag++; }
 				img2(v, u) = rgb1.ptr<cv::Vec3b>(m)[n];
-		//	}
-		//	else { flag++; }
+			}
+			else { flag++; }
 		}
 	}cout << flag;
 	//cv::GaussianBlur(img2, img2,cv::Size(7,7),15);
