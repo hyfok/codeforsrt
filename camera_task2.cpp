@@ -104,7 +104,7 @@ int main(int argc, char ** argv) {
 //	depth2pcolor(prgb, depth0, 2);
 
 	cv::Mat_<double> pcamera1(4, 1), pcamera2(4, 1), pworld(4, 1);	
-	cv::Mat_<cv::Vec3b> img2(rgb1.rows, rgb1.cols);
+	cv::Mat_<cv::Vec3b> img2(rgb1.rows, rgb1.cols, cv::Vec3b(0,0,0));
 
 	int flag = 0;
 	
@@ -119,15 +119,15 @@ int main(int argc, char ** argv) {
 			double z0 = double(d0) / camera_factor;
 			double z1 = double(d1) / camera_factor; //两深度图坐标对应值
 			
-			pcamera1(0, 0) = (n - camera_cx) * z0 / camera_fx;  //第一个相机坐标
-			pcamera1(1, 0) = (m - camera_cy) * z0 / camera_fy;
+			pcamera1(0, 0) = (double(n) - camera_cx) * z0 / camera_fx;  //第一个相机坐标
+			pcamera1(1, 0) = (double(m) - camera_cy) * z0 / camera_fy;
 			pcamera1(2, 0) = z0;
 			pcamera1(3, 0) = 1.0;
 			pworld = t1.inv() * pcamera1;  //第一个相机坐标转世界坐标
 			pcamera2 = t2 * pworld;  //世界坐标转第二个相机坐标
 			
-			if (z1 != 0)
-			{
+		//	if (z1 != 0)
+			//{
 				u = int(pcamera2(0, 0) * camera_fx / pcamera2(2, 0) + camera_cx + 0.5);  //第二个相机坐标转像素坐标
 				v = int(pcamera2(1, 0) * camera_fy / pcamera2(2, 0) + camera_cy + 0.5);
 				if (u >= img2.cols) { u = img2.cols - 1; flag++; }
@@ -135,12 +135,13 @@ int main(int argc, char ** argv) {
 				if (v >= img2.rows) {v = img2.rows - 1; flag++; }
 				if (v < 0){v = 0; flag++; }
 				img2(v, u) = rgb1.ptr<cv::Vec3b>(m)[n];
-			}
-			else { flag++; }
+		//	}
+		//	else { flag++; }
 		}
 	}cout << flag;
 	//cv::GaussianBlur(img2, img2,cv::Size(7,7),15);
 	cv::imshow("img2", img2);
+	cv::imwrite("img.jpg",img2);
 	cv::waitKey(0);
 	return 0;
 }
